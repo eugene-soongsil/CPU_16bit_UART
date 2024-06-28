@@ -1,5 +1,8 @@
 module Team4_CPU(
     input               clk, reset,
+    input               uart_en,
+    input   [15:0]      uart_data,
+    input   [1:0]       uart_sel,
     output  [15:0]      DataOut
 );
 
@@ -12,9 +15,13 @@ wire    [1:0]       alufuncC;
 wire    [3:0]       opcodeDP, srcAdd1, srcAdd2, destAddE;
 wire    [15:0]      RegDataA, RegDataB, alu_resultE;
 
+
 DataPath        inst_DataPath(
     .clk(clk),
     .reset(reset),
+    .uart_en(uart_en),
+    .uart_sel(uart_sel),
+    .uart_data(uart_data),
     .flushC(flushE),
     .flushD(flushD),
     .RegWriteC(RegWriteC),

@@ -6,6 +6,7 @@ module MemoryData(
     input      [15:0]      write_dataM,
     output     [15:0]      read_dataM
 );//1KB memory
+//done signal?
 
 integer i;
 integer k;

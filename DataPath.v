@@ -1,5 +1,8 @@
 module DataPath(
     input               clk, reset,
+    input               uart_en, //uart
+    input   [1:0]       uart_sel,
+    input   [15:0]      uart_data,
     input               stallF, stallD, forwardA, forwardB,
     input               InstBranch, flushD,
     input               flushC, RegWriteC, MemWriteC, MemToRegC, immediateC,
@@ -21,13 +24,36 @@ wire    [3:0]           forward_addE,
 wire    [15:0]          w_pcNew, w_pcF, w_pcD, PC_branch;
 wire    [15:0]          w_instF, w_instD, srcDataE1, srcDataE2,
                         alu_resultE, alu_resultM, alu_resultW, MemReadDataM, MemReadDataW,
-                        alu_resultMout, srcDataD1, srcDataD2;
+                        alu_resultMout, srcDataD1, srcDataD2,
+                        uart_data;
+
+reg     uart_inst_en, uart_mem_en;
+
+always@(*)begin
+    if(~reset)begin
+        uart_inst_en = 1'b0;
+        uart_mem_en  = 1'b0;
+    end
+    else if(uart_sel == 2'd3 && uart_en)begin
+        uart_inst_en = 1'b1;
+        uart_mem_en  = 1'b0;
+    end
+    else if(uart_sel == 2'd1 && uart_en)begin
+        uart_inst_en = 1'b0;
+        uart_mem_en  = 1'b1;
+    end
+    else
+        uart_inst_en = 1'b0;
+        uart_mem_en  = 1'b0;
+end
 
 ProgramCounter      inst_ProgramCounter(
     .clk(clk),
     .reset(reset),
     .enable(stallF),
     .done(MemWriteW),
+    .uart_inst(uart_data),
+    .uart_inst_en(uart_inst_en).
     .InstBranch(InstBranch),
     .PC_branch(PC_branch),
     .i_pcOld(w_pcF), //from fetchstage
@@ -132,6 +158,8 @@ MemoryStage         inst_MemoryStage(
     .MemWriteM(MemWriteM),
     .destAddM(destAddM), //edit
     .alu_resultM(alu_resultM),
+    .uart_mem(uart_data),
+    .uart_mem_en(uart_mem_en),
     .MemReadDataM(MemReadDataM), //out
     .MemWriteMout(MemWriteMout),
     .alu_resultMout(alu_resultMout)
