@@ -1,0 +1,40 @@
+###CPU 수정사항
+
+Memory data 주소 입력방법 수정 : Instruction bit가 모자라서 현재 alu result가 add, data에 모두 들어가는 상황
+-> register나 memory에서 pointer 사용하는 방법? no no destadd로 16개의 주소만 설정하게 변경
+
+RX신호를 Memory data에 들어가도록 연결?
+case 1. 미리 지정한 inst mem에서 LDA기능을 이용해 memory에 data가 들어가도록 
+case 2. UART에서 쏴준 데이터 16bit data를 직접적으로 memory data에 들어가도록
+
+##진행사항##
+case 3. UART에서 Register에 직접적으로 데이터를 넣어주고 연산 결과를 memory에 저장
+register에 UART로 데이터를 입력(한 reg에만) 하고 memory에 저장하고 다음 입력 데이터는 instruction으로 memory주소 변경
+그 후에 memory에서 LDA해온 데이터들로 연산 수행 후 결과 확인까지.
+
+1. 우선 memory구조 0~15 까지로 변경 후에 destadd로 주소 선택하도록 하기
+ok
+
+2. fetch stage 의 pc adder 제거 후에 RX신호를 받아서 instmem의 inst선택하도록 수정 (UART 수신 전까지 대기하도록 수정)
+ok : ProgramCounter에 uart_en 신호 추가
+
+3. 적절한 Instruction set 구상(stall, branch hazard 점검 필요 !!)
+세원
+
+4. input단 뚫기(RX enable신호도 들어오니까 이거에 맞게 동작하도록 수정)
+
+5. output STA동작시에만 1clk 결과값 내보내도록 (MemWriteM 신호 출력단까지 가져와서 enable 신호로 사용 !!)
++ STA후에 done신호 fetch로 보내주기
+-> MemWrite신호 연결 탑모듈 확인하고 추가 했음
+
+6. MemoryData uart_mem_en, uart_mem 신호 추가
+ok : integer k 사용해서 0부터 순서대로 메모리 삽입
+-> 구조를 다르게해서 구현할 수 도 있으나 우선은 이렇게 수정함
+
+7. input단에서 enable 신호로 한clk의 data만 받아오기
+
+
+MemWrite 신호 memo
+동작방식?
+1. uart에서 받은 16bit data로 pc값을 조정
+2. uart에서 받은 data로 instruction set선택
