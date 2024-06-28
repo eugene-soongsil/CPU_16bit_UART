@@ -5,10 +5,7 @@ module Instruction_Mem(
 
     reg [15:0] instM[4095:0];
 
-    always@(*)begin
-		if(~reset)
-			instM = 16'b0;
-		else begin
+    initial begin
             //100
 				instM[100] = 16'b0000_1101_0000_0000;
 				instM[101] = 16'b0000_1101_0100_0001;
@@ -97,7 +94,6 @@ module Instruction_Mem(
 				instM[909] = 16'b0110_1111_0000_1111; //pipeline
 				instM[910] = 16'b0001_1101_0000_0110;
 			end
-		end
 
     assign M_instruction = instM[PCAdd_pc];
 

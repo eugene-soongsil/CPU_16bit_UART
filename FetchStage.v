@@ -6,7 +6,7 @@ module FetchStage(
     output  [15:0]      o_instF
 );//PC behavior
 
-reg         [15:0]      pc_sel;
+wire         [15:0]      pc_sel;
 
 assign      pc_sel = uart_inst_enF ? uart_instF : i_pcF;
 

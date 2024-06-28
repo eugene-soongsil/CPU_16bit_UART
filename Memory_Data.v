@@ -14,12 +14,15 @@ integer k;
 reg [15:0] mem[15:0];
 
 always@(negedge clk or negedge reset)begin
-    if(~reset)
+    if(~reset)begin
         for(i=0; i<16; i=i+1)begin
             mem[i] <= i;
         end
+        k <= 0;
+    end
     else if(uart_mem_en)begin
-        mem[k++] <= uart_mem;
+        mem[k] <= uart_mem;
+        k <= k + 1;
     end
     else if(write_en)
         mem[addrM] <= write_dataM;

@@ -37,7 +37,7 @@ always@(posedge clk or negedge reset)begin
         r_pcNew    <= 0;
         uart_instF <= 0;
     end
-    else if(!enable && r_uart_inst_en)begin
+    else if(!enable && (r_uart_inst_en||uart_inst_en))begin
         r_pcNew    <= i_pcOld;
         uart_instF <= uart_inst;
     end
