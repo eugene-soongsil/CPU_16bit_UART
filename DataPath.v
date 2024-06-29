@@ -27,7 +27,7 @@ wire    [15:0]          w_instF, w_instD, srcDataE1, srcDataE2,
                         //alu_resultE,
                         alu_resultM, alu_resultW, MemReadDataM, MemReadDataW,
                         alu_resultMout, srcDataD1, srcDataD2;
-wire    [15:0]          uart_instF;
+wire    [15:0]          uart_instF, MemReadDataWout;
 wire                    uart_inst_enF;
 
 wire     uart_inst_en, uart_mem_en;
@@ -74,7 +74,7 @@ DecodeStage         inst_DecodeStage(
     .reset(reset),
     .write_en(RegWriteW),
     .destAddW(destAddW),
-    .i_write_data(ResultW),
+    .i_write_data(MemReadDataWout),
     .immediateC(immediateC),
     .i_inst(w_instD),
     .InstBranch(InstBranch),
@@ -180,6 +180,7 @@ WriteBackStage      inst_WritebackStage(
     .MemReadDataW(MemReadDataW),
     .alu_resultW(alu_resultW),
     .done(done), //out
+    .MemReadDataWout(MemReadDataWout),
     .ResultW(ResultW)
 );
 

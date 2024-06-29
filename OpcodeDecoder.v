@@ -34,7 +34,7 @@ always @(*) begin
     flag = 9'b00_0000000;
     case(i_opcode[3:0])
         LDA_imm     : flag =    9'b00_0010111;
-        STA_imm     : flag =    9'b00_0001011;//forward edit
+        STA_imm     : flag =    9'b00_0001010;//forward edit
         CAL_add     : flag =    9'b00_0010001;
         CAL_sub     : flag =    9'b01_0010001;
         CAL_mul     : flag =    9'b10_0010001;
