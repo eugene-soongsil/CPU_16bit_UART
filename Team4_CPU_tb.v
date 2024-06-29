@@ -40,6 +40,8 @@ initial begin
     #80
     cpusim(16'd10,2'd1);
     #1000
+    cpusim(16'd30,2'd1);
+    #1000
     cpusim(16'd100,2'd2);
     #1000
     $finish;

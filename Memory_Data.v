@@ -28,7 +28,7 @@ always@(negedge clk or negedge reset)begin
         mem[addrM] <= write_dataM;
 end
 
-assign read_dataM = mem[addrM];
+assign read_dataM = mem[write_dataM];
 
 endmodule
 

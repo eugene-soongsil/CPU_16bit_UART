@@ -30,7 +30,7 @@ always@(*)begin
 end
 
 always@(*)begin
-    if(forwardD && RegWriteE && (srcAdd1 == destAddE))
+    if(forwardD && (RegWriteE || MemWrite) && (srcAdd1 == destAddE))//edit
         forwardA = 1'b1;
     else
         forwardA = 1'b0;
