@@ -10,7 +10,8 @@ module DataPath(
     output              RegWriteE, MemToRegE,//to DH
     output  [3:0]       srcAdd1, srcAdd2, destAddE,
     output  [3:0]       opcodeDP,
-    output  [15:0]      ResultW, RegDataA, RegDataB, alu_resultE
+    output  [15:0]      ResultW, RegDataA, RegDataB, alu_resultE,
+    output              done
 );
 
 wire                    RegWriteM, RegWriteW, MemToRegM, MemToRegW,
@@ -178,8 +179,8 @@ WriteBackStage      inst_WritebackStage(
     .MemWriteW(MemWriteW),
     .MemReadDataW(MemReadDataW),
     .alu_resultW(alu_resultW),
-    .done(done),
-    .ResultW(ResultW) //out
+    .done(done), //out
+    .ResultW(ResultW)
 );
 
 endmodule

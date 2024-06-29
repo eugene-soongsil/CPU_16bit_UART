@@ -3,7 +3,8 @@ module Team4_CPU(
     input               uart_en,
     input   [15:0]      uart_data,
     input   [1:0]       uart_sel,
-    output  [15:0]      DataOut
+    output  [15:0]      DataOut,
+    output              done
 );
 
 wire                branchC, flushC, RegWriteC, MemWriteC, MemToRegC,
@@ -43,7 +44,8 @@ DataPath        inst_DataPath(
     .destAddE(destAddE),
     .RegDataA(RegDataA),
     .RegDataB(RegDataB),
-    .alu_resultE(alu_resultE)
+    .alu_resultE(alu_resultE),
+    .done(done)
 );
 
 ControlUnit     inst_ControlUnit(
