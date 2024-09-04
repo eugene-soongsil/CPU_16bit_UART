@@ -5,7 +5,7 @@ module MemoryData(
     input      [15:0]      uart_mem,
     input      [15:0]      write_dataM,
     output     [15:0]      read_dataM
-);//1KB memory
+);//32Byte memory RAM
 //done signal?
 
 integer i;
@@ -34,4 +34,3 @@ endmodule
 
 //CRC를 넣어서 데이터를 보내면 data랑 같이
 //CRC가 포함된 UART, ALU에 CRC연산 추가?
-//
