@@ -16,6 +16,7 @@ Team4_CPU   inst_CPU(
     .DataOut(DataOut),
     .done(done)
 );
+
 task cpusim(
     input [15:0] udata,
     input [1:0] sel
@@ -48,23 +49,23 @@ initial begin
     #1000
     cpusim(16'd40,2'd1);
     #1000
-    cpusim(16'd100,2'd2);
+    cpusim(16'd100,2'd2); //1
     #2000
-    cpusim(16'd200,2'd2);
+    cpusim(16'd200,2'd2); //2
     #2000
-    cpusim(16'd300,2'd2);
+    cpusim(16'd300,2'd2); //3 done error
     #2000
-    cpusim(16'd400,2'd2);
+    cpusim(16'd400,2'd2); //4 
     #2000
-    cpusim(16'd500,2'd2);
+    cpusim(16'd500,2'd2); //5
     #2000
-    cpusim(16'd600,2'd2);
+    cpusim(16'd600,2'd2); //6
     #2000
-    cpusim(16'd700,2'd2);
+    cpusim(16'd700,2'd2); //7
     #2000
-    cpusim(16'd800,2'd2);
+    cpusim(16'd800,2'd2); //8 done error
     #2000
-    cpusim(16'd900,2'd2);
+    cpusim(16'd900,2'd2); //9 done error
     #2000
     $finish;
 end
