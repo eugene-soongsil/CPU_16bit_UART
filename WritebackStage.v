@@ -13,4 +13,4 @@ assign done = MemWriteW;
 
 endmodule
 //STA시에만 ResultW값 내보내도록
-//done -> fetch stage 연결
+//done -> fetch stage 연결    

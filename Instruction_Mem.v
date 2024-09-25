@@ -15,6 +15,7 @@ module Instruction_Mem(
 				instM[105] = 16'b0110_1111_0000_1111; //pipeline
 				instM[106] = 16'b0110_1111_0000_1111; //pipeline
 				instM[107] = 16'b0001_0010_0000_1111;
+				instM[108] = 16'b0110_1111_0000_1111; //Done Solve
             //200 ADD 3 DATA
 				instM[200] = 16'b0000_1101_0000_0000;
 				instM[201] = 16'b0000_1101_0001_0001;
@@ -25,6 +26,7 @@ module Instruction_Mem(
 				instM[206] = 16'b0110_1111_0000_1111; //pipeline
 				instM[207] = 16'b0110_1111_0000_1111; //pipeline
 				instM[208] = 16'b0001_0100_0000_1111;
+				instM[209] = 16'b0110_1111_0000_1111; //Done Solve
 			//300 ADD 4 DATA
 				instM[300] = 16'b0000_1101_0000_0000;
 				instM[301] = 16'b0000_1101_0001_0001;
@@ -37,6 +39,7 @@ module Instruction_Mem(
 				instM[308] = 16'b0110_1111_0000_1111; //pipeline
 				instM[309] = 16'b0110_1111_0000_1111; //pipeline
 				instM[310] = 16'b0001_0110_0000_1111;
+				instM[311] = 16'b0110_1111_0000_1111; //Done Solve
 			//400 SUB 2 DATA
 				instM[400] = 16'b0000_1101_0000_0000;
 				instM[401] = 16'b0000_1101_0001_0001;
@@ -46,6 +49,7 @@ module Instruction_Mem(
 				instM[405] = 16'b0110_1111_0000_1111; //pipeline
 				instM[406] = 16'b0110_1111_0000_1111; //pipeline
 				instM[407] = 16'b0001_0010_0000_1111;
+				instM[408] = 16'b0110_1111_0000_1111; //Done Solve
 			//500 SUB 3 DATA 				   
 				instM[500] = 16'b0000_1101_0000_0000;
 				instM[501] = 16'b0000_1101_0001_0001;
@@ -56,6 +60,7 @@ module Instruction_Mem(
 				instM[506] = 16'b0110_1111_0000_1111; //pipeline
 				instM[507] = 16'b0110_1111_0000_1111; //pipeline
 				instM[508] = 16'b0001_0100_0000_1111;
+				instM[509] = 16'b0110_1111_0000_1111; //Done Solve
 			//600 SUB 4 DATA -> 세원이형이 잘못만듬   
 				instM[600] = 16'b0000_1101_0000_0000;
 				instM[601] = 16'b0000_1101_0001_0001;
@@ -68,6 +73,7 @@ module Instruction_Mem(
 				instM[608] = 16'b0110_1111_0000_1111; //pipeline
 				instM[609] = 16'b0110_1111_0000_1111; //pipeline
 				instM[610] = 16'b0001_0110_0000_1111;
+				instM[611] = 16'b0110_1111_0000_1111; //Done Solve
 			//700 MUL 2 DATA				   
 				instM[700] = 16'b0000_1101_0000_0000;
 				instM[701] = 16'b0000_1101_0001_0001;
@@ -77,6 +83,7 @@ module Instruction_Mem(
 				instM[705] = 16'b0110_1111_0000_1111; //pipeline
 				instM[706] = 16'b0110_1111_0000_1111; //pipeline
 				instM[707] = 16'b0001_0010_0000_1111;
+				instM[708] = 16'b0110_1111_0000_1111; //Done Solve
 			//800 MUL 3 DATA	   
 				instM[800] = 16'b0000_1101_0000_0000;
 				instM[801] = 16'b0000_1101_0001_0001;
@@ -87,6 +94,7 @@ module Instruction_Mem(
 				instM[806] = 16'b0110_1111_0000_1111; //pipeline
 				instM[807] = 16'b0110_1111_0000_1111; //pipeline
 				instM[808] = 16'b0001_0100_0000_1111;
+				instM[809] = 16'b0110_1111_0000_1111; //Done Solve
 			//900 MUL 4 DATA
 				instM[900] = 16'b0000_1101_0000_0000;
 				instM[901] = 16'b0000_1101_0001_0001;
@@ -99,6 +107,7 @@ module Instruction_Mem(
 				instM[908] = 16'b0110_1111_0000_1111; //pipeline
 				instM[909] = 16'b0110_1111_0000_1111; //pipeline
 				instM[910] = 16'b0001_0110_0000_1111;
+				instM[911] = 16'b0110_1111_0000_1111; //Done Solve
 			end
 
     assign M_instruction = instM[PCAdd_pc];

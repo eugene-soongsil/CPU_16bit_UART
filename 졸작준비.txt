@@ -1,0 +1,10 @@
+# 전체적인 설계 방향
+UART로 데이터를 입력 받아서 CPU에서 Data처리를 한 후에 Serial Com으로 확인
+
+1. Implementation Sim에서 Done신호가 여러번 나오는 문제
+-> Done 신호가 WriteBack Stage에 물려있어서 그런 것 같음 -> 아닌듯
+-> 뜯어보니까 MemWrite(Done) 신호가 OpcodeDecoder에서부터 잘못 나오고 있는듯
++ 아예 data도 잘못 처리되어서 나오는거같은데 이거 왜 sim이 콤비가 안나오지
++ OpcodeDecoder 문제 맞는거같고 Combinational Circuit 형태를 좀 바꿔야할듯,
+Data가 제대로 안나오는 문제는 그대로임 OpcodeDecoder를 Implementation이후의 파형으로 보고싶은데,
+어떻게 해야할지 다른 선배들한테 좀 물어볼까......?
