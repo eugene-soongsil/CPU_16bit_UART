@@ -8,3 +8,15 @@ UART로 데이터를 입력 받아서 CPU에서 Data처리를 한 후에 Serial 
 + OpcodeDecoder 문제 맞는거같고 Combinational Circuit 형태를 좀 바꿔야할듯,
 Data가 제대로 안나오는 문제는 그대로임 OpcodeDecoder를 Implementation이후의 파형으로 보고싶은데,
 어떻게 해야할지 다른 선배들한테 좀 물어볼까......?
+-> register, memory에 있는 negedge 때문에...??
+#해결 : inst의 initial문이 문제가 되었음 다른곳에 있는 for문도 수정해야할듯
+
+2. UART 16bit filter 설계
+-> 아론아..?
+-> 없이 CPU부터 검증해야할지? 
+
+3. UART를 달고 simulation 다시 검증
+
+
+##############################################################
+1. 우선 XDC 파일 수정하고 보드에 얹어보기

@@ -1,13 +1,13 @@
 module OpcodeDecoder(
-    input   [3:0] i_opcode,
-    output  reg branch,
-    output  reg flush,
-    output  reg RegWrite,
-    output  reg MemToReg,
-    output  reg MemWrite,
-    output  reg immediate,
-    output  reg forward,
-    output  reg [1:0] o_alufunc
+    input   [3:0]       i_opcode,
+    output   reg        branch,
+    output   reg        flush,
+    output   reg        RegWrite,
+    output   reg        MemToReg,
+    output   reg        MemWrite,
+    output   reg        immediate,
+    output   reg        forward,
+    output   reg [1:0]  o_alufunc
 ); //to excute register
 
 reg [8:0] flag;
@@ -29,7 +29,7 @@ parameter
     // 기본값 설정 (디폴트 상태)
     {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
 
-    case(i_opcode[3:0])
+    case(i_opcode)
         LDA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010111;
         STA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0001010;
         CAL_add     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010001;

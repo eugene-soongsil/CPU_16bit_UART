@@ -15,9 +15,9 @@ module Register_File(
 reg [15:0] registers [0:15];
 
 integer i;
-always @(negedge clk or negedge reset) begin //negedge clk for 1clock cycle
+always@(negedge clk or negedge reset)begin //negedge clk for 1clock cycle
     if (~reset) begin
-        for (i = 0; i < 16; i = i + 1) begin
+        for (i = 0; i < 16; i = i + 1)begin
             registers[i] <= 16'h0000;
         end
     end
