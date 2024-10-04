@@ -23,6 +23,7 @@ parameter           IDLE    = 0,
 reg                 r_before_IDLE, r_RxDone;
 reg     [3:0]       rx_state, next_rx_state, r_rx_cnt, s_data;
 reg     [7:0]       r_data;
+reg                 sampling_Tick;
 
 //state logic
 always@(posedge clk or negedge reset)begin
@@ -93,10 +94,16 @@ end
 
 //r_data save flipflop
 always@(posedge clk or negedge reset)begin
-    if(~reset)
+    if(~reset)begin
         r_data <= 8'd0;
-    else if(r_rx_cnt == 4'd15)
+        sampling_Tick <= 1'b0;
+    end
+    else if(r_rx_cnt == 4'd15)begin
         r_data[rx_state-2] <= s_data[3];
+        sampling_Tick <= 1'b1;
+    end
+    else
+        sampling_Tick <= 1'b0;
     //else if(rx_state == STOP) //for testbench visual
     //   r_data <= 8'd0;
 end
@@ -119,7 +126,7 @@ always@(posedge clk or negedge reset)begin
     else
         r_RxDone <= 0;
 end
-assign RxDone    = ((rx_state == STOP) != r_RxDone) && r_RxDone; ;
+assign RxDone    = (r_RxDone != (rx_state == STOP)) && (rx_state == STOP);
 
 //FF ? Combination?
 always@(posedge clk or negedge reset)begin
