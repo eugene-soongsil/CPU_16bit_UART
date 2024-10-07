@@ -80,7 +80,7 @@ begin
 	#104160
 	i_rxin <= 1'b1;
 	#104160
-	uart_sel <= 2'b0;
+	uart_sel <= 2'd0;
 	@(posedge clk)
 	data_frame <= 1'b1;
 end

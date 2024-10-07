@@ -28,7 +28,7 @@ UART_RX         Rx(
     .i_clk_rx(w_clk_rx),
     .i_rxd(i_RxData),
     .RxDone(o_RxDone),
-    .RxStopBit(),
+    //.RxStopBit(),
     .o_rx_data(o_RxD)
 );
 

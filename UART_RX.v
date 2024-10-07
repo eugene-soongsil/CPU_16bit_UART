@@ -1,200 +1,145 @@
-module UART_RX(
-    input               clk,
-    input               reset,
-    input               i_clk_rx,
-    input               i_rxd,
-    output              RxDone,
-    output reg          RxStopBit,
-    output reg [7:0]    o_rx_data
+module UART_RX (
+	output [7:0] o_rx_data,
+	output RxDone,
+	input i_rxd,
+	input i_clk_rx,
+	input clk,
+	input reset
 );
 
-parameter           IDLE    = 0,
-                    START   = 1,
-                    D0      = 2,
-                    D1      = 3,
-                    D2      = 4,
-                    D3      = 5,
-                    D4      = 6,
-                    D5      = 7,
-                    D6      = 8,
-                    D7      = 9,
-                    STOP    = 10;
+parameter 	idle = 4'b0000, 
+			start = 4'b0001, 
+			load1 = 4'b0010, 
+			load2 = 4'b0011, 
+			load3 = 3'b0100, 
+			load4 = 4'b0101, 
+			load5 = 4'b0110, 
+			load6 = 4'b0111, 
+			load7 = 4'b1000, 
+			load8 = 4'b1001, 
+			stop = 4'b1010;
 
-reg                 r_before_IDLE, r_RxDone;
-reg     [3:0]       rx_state, next_rx_state, r_rx_cnt, s_data;
-reg     [7:0]       r_data;
-reg                 sampling_Tick;
+reg [7:0]   r_rx_data;
 
-//state logic
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        rx_state <= IDLE;
-    else if(next_rx_state == START)
-        rx_state <= START;
-    //else if(rx_state == START) //don't need
-    //    rx_state <= D0;
-    else if(i_clk_rx && r_rx_cnt == 4'd15)
-        rx_state <= next_rx_state;
+reg [3:0] 	cnt;
+reg [3:0] 	state_reg, state_next;
+
+reg [2:0]	save;
+reg 		rxins;
+reg 		next;
+reg 		cnts;
+reg			done_sig_reg;
+reg			done_sig;
+
+always @(posedge clk or negedge reset) begin
+	if(!reset | cnts) begin 
+		cnt <= 0;
+		next <= 0;
+	end
+	else if(cnt == 4'b1111 && i_clk_rx) begin
+		cnt <= 0;
+		next <= 1;
+	end
+	else if(i_clk_rx) cnt <= cnt + 1;
+	else next <= 0;
 end
 
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        r_before_IDLE <= 1'b0;
-    else if(i_clk_rx && (rx_state == IDLE))
-        r_before_IDLE <= 1'b1;
-    else if(rx_state == STOP)
-        r_before_IDLE <= 1'b0;
+//sampling
+always@(posedge clk)begin
+	if(!reset | cnt == 4'b0001) begin
+		save <= 0;
+		rxins <= 0;
+	end
+	else begin 
+		save[0] <= (cnt == 4'b0011)? i_rxd : save[0];
+		save[1] <= (cnt == 4'b0111)? i_rxd : save[1];
+		save[2] <= (cnt == 4'b1011)? i_rxd : save[2];
+		rxins <= ((save[0] + save[1] + save[2] ) > 1)? 1 : 0;
+	end
 end
 
-//state output & next state logic
-always@(*)begin
-    next_rx_state = rx_state;
-
-    case(rx_state)
-    IDLE    :   begin
-        if(~i_rxd && reset && r_before_IDLE)begin
-            next_rx_state = START;
-        end
-        else begin
-            next_rx_state = IDLE;
-        end
-    end
-    START   :   begin
-        next_rx_state = D0;
-    end
-    D0      :   begin
-        next_rx_state = D1;
-    end
-    D1      :   begin
-        next_rx_state = D2;
-    end
-    D2      :   begin
-        next_rx_state = D3;
-    end
-    D3      :   begin
-        next_rx_state = D4;
-    end
-    D4      :   begin
-        next_rx_state = D5;
-    end
-    D5      :   begin
-        next_rx_state = D6;
-    end
-    D6      :   begin
-        next_rx_state = D7;
-    end
-    D7      :   begin
-        next_rx_state = STOP;
-    end
-    STOP    :   begin
-        next_rx_state = IDLE;
-    end
-    endcase
+always @(posedge clk or negedge reset) begin
+	if(!reset || (state_reg > 4'b1010)) state_reg <= idle;
+	else state_reg <= state_next;
 end
 
-//r_data save flipflop
-always@(posedge clk or negedge reset)begin
-    if(~reset)begin
-        r_data <= 8'd0;
-        sampling_Tick <= 1'b0;
-    end
-    else if(r_rx_cnt == 4'd15)begin
-        r_data[rx_state-2] <= s_data[3];
-        sampling_Tick <= 1'b1;
-    end
-    else
-        sampling_Tick <= 1'b0;
-    //else if(rx_state == STOP) //for testbench visual
-    //   r_data <= 8'd0;
+
+always @(posedge clk or negedge reset) begin
+	if(!reset)begin
+		done_sig_reg <= 'b0;
+	end
+	else begin
+		done_sig_reg <= done_sig;
+	end
 end
 
-//o_data
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        o_rx_data <= 8'd0;
-    else if(rx_state == STOP)
-        o_rx_data <= r_data;
-    //else
-    //    o_rx_data <= 8'd0;
+assign RxDone = (done_sig_reg != done_sig) && (done_sig_reg==0);
+
+
+
+
+
+always @(*) begin
+	state_next = state_reg;
+	cnts = 0;
+	done_sig = 0;
+	//r_rx_data = r_rx_data;
+	case (state_reg)
+		4'b0000 : begin
+			if(!i_rxd) begin 
+				state_next = start;
+				cnts = 1;
+			end
+			else done_sig = 0;
+		end
+		4'b0001 : begin
+			if(next) state_next = load1;
+			else ;
+		end
+		4'b0010 : begin
+			if(next) state_next = load2;
+		end
+		4'b0011 : begin
+			if(next) state_next = load3;
+		end
+		4'b0100 : begin
+			if(next) state_next = load4;
+		end
+		4'b0101 : begin
+			if(next) state_next = load5;
+		end
+		4'b0110 : begin
+			if(next) state_next = load6;
+		end
+		4'b0111 : begin
+			if(next) state_next = load7;
+		end
+		4'b1000 : begin
+			if(next) state_next = load8;
+		end
+		4'b1001 : begin
+			if(next) state_next = stop;
+		end
+		4'b1010 : begin
+			if(next) state_next = idle;
+			else done_sig = 1;
+		end
+		default : begin
+			state_next = idle;
+			done_sig = 0;
+		end
+	endcase
 end
 
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        r_RxDone <= 0;
-    else if(rx_state == STOP)
-        r_RxDone <= 1;
-    else
-        r_RxDone <= 0;
-end
-assign RxDone    = (r_RxDone != (rx_state == STOP)) && (rx_state == STOP);
-
-//FF ? Combination?
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        RxStopBit = 1'b0;
-    else if(RxDone)
-        RxStopBit = i_rxd;
+always @(posedge clk or negedge reset) begin
+	if(!reset) begin
+		r_rx_data <= 0;
+	end
+	else if(state_reg > 1 | state_reg < 10) begin
+		r_rx_data[state_reg - 2] <= rxins;
+	end
 end
 
-/*
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        RxDone <= 0;
-    else if(rx_state == STOP)
-        RxDone <= 1;
-    else
-        RxDone <= 0;
-end
-*/
-
-//16bit sampling counter
-always@(posedge clk or negedge reset)begin
-    if(~reset)// && i_rxd == 0))
-        r_rx_cnt <= 4'd0;
-    else if(rx_state == IDLE)
-        r_rx_cnt <= 4'd0;
-    else if(i_clk_rx && (r_rx_cnt == 4'd15))
-        r_rx_cnt <= 4'd0;
-    else if(i_clk_rx) //조건문 지움
-        r_rx_cnt <= r_rx_cnt + 4'd1;
-end
-
-//sampling data set
-always@(*)begin
-    if(~reset)
-        s_data = 4'd0;
-    else if(r_rx_cnt == 4'd0)
-        s_data = 4'd0;
-    else if(r_rx_cnt == 4'd7)
-        s_data[0] = i_rxd;
-    else if(r_rx_cnt == 4'd8)
-        s_data[1] = i_rxd;
-    else if(r_rx_cnt == 4'd9)
-        s_data[2] = i_rxd;
-    else if(r_rx_cnt == 4'd10)
-        s_data[3] = (s_data[2] & s_data[1]) | (s_data[1] & s_data[0]);
-end
-
-//assign div_en = (rx_state == D0) ? 1'b1 : 1'b0;
-
-/*
-always@(posedge clk or negedge reset)begin
-    if(~reset)
-        div_en <= 1'b0;
-    else if(rx_state == D0)
-        div_en <= 1'b1;
-    else if(rx_state == STOP)
-        div_en <= 1'b0;
-end
-*/
-
-/* combination...?
-always@(*)begin
-    if(rx_state == STOP)
-        o_rx_data = r_data;
-    else
-        o_rx_data = o_data;
-end
-*/
+assign o_rx_data = RxDone ? r_rx_data : 0;
 
 endmodule
