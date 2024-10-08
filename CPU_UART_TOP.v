@@ -5,7 +5,7 @@ module CPU_UART_TOP(
     input               RxData,
     output              TxData
 );
-laptop test
+
 wire                w_CPU_Enable, w_CPU_Done, w_RxDone, f_write;
 wire    [7:0]       w_RxData, w_TxData;
 wire    [15:0]      w_o_CPU_Data, w_i_CPU_Data;
