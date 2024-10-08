@@ -1,4 +1,5 @@
 module FetchStage(
+    input               reset,
     input   [15:0]      uart_instF,
     input               uart_inst_enF,
     input   [15:0]      i_pcF,
@@ -16,6 +17,7 @@ PC_Adder    inst_PCAdder(
 );
 
 Instruction_Mem     inst_InstMem(
+    .reset(reset),
     .PCAdd_pc(pc_sel),
     .M_instruction(o_instF)
 );

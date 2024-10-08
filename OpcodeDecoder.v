@@ -23,7 +23,8 @@ parameter
           IMM_sub       = 4'b0111,
           IMM_mul       = 4'b1000,
           BAF_immsub    = 4'b1001,
-          BAF_regsub    = 4'b1010;
+          BAF_regsub    = 4'b1010,
+          NONE          = 4'b1111;
 
  always @(*) begin
     // 기본값 설정 (디폴트 상태)
@@ -41,9 +42,10 @@ parameter
         IMM_mul     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b10_0010011;
         BAF_immsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100010;
         BAF_regsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100000;
+        NONE        : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
     endcase
 end
-/*
+/* 
 always @(*) begin
     {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = flag;
 end
@@ -62,6 +64,7 @@ always @(*) begin
         IMM_mul     : flag =    9'b10_0010011;
         BAF_immsub  : flag =    9'b01_1100010;
         BAF_regsub  : flag =    9'b01_1100000;
+        NONE        : flag =    9'b00_0000000;
     endcase
 end
 */

@@ -75,10 +75,6 @@ end
 
 assign RxDone = (done_sig_reg != done_sig) && (done_sig_reg==0);
 
-
-
-
-
 always @(*) begin
 	state_next = state_reg;
 	cnts = 0;

@@ -1,11 +1,18 @@
 module Instruction_Mem(
+	input		      reset,
     input      [15:0] PCAdd_pc,
     output     [15:0] M_instruction
 ); //instruction memory(fetch)
 
-    reg [15:0] instM[4095:0];
+integer i;
+
+reg [15:0] instM[4095:0];
 
 always@(*)begin
+	if(~reset)
+		for(i = 0; i < 4096; i = i + 1)
+			instM[i] = 16'hFFFF;
+	else begin
 			//100 ADD 2 DATA
 				instM[100] = 16'b0000_1101_0000_0000;
 				instM[101] = 16'b0000_1101_0001_0001;
@@ -108,11 +115,11 @@ always@(*)begin
 				instM[909] = 16'b0110_1111_0000_1111; //pipeline
 				instM[910] = 16'b0001_0110_0000_1111;
 				instM[911] = 16'b0110_1111_0000_1111; //Done Solve
+	end
 end
-		
 assign M_instruction = instM[PCAdd_pc];
 /*
-    initial begin
+initial begin
             //100 ADD 2 DATA
 				instM[100] = 16'b0000_1101_0000_0000;
 				instM[101] = 16'b0000_1101_0001_0001;
@@ -216,6 +223,7 @@ assign M_instruction = instM[PCAdd_pc];
 				instM[910] = 16'b0001_0110_0000_1111;
 				instM[911] = 16'b0110_1111_0000_1111; //Done Solve
 			end
-			*/
+	*/
+			
 
 endmodule

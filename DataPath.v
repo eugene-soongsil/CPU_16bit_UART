@@ -51,6 +51,7 @@ ProgramCounter      inst_ProgramCounter(
 );
 
 FetchStage          inst_FetchStage(
+    .reset(reset),
     .uart_instF(uart_instF),
     .uart_inst_enF(uart_inst_enF),
     .i_pcF(w_pcNew),
