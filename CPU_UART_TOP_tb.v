@@ -86,7 +86,6 @@ begin
 end
 endtask
 
-
 initial begin
 	#1000000
 	rx_in(16'h20F2, 2'h1);

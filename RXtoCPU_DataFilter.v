@@ -48,10 +48,10 @@ always@(posedge clk or negedge reset)begin
         data_buffer <= 0;
     else if(RxDone && state == IDLE)
         data_buffer[15:8] = RxData;
-    else if(RxDone && state == MSB)begin
+    else if(RxDone && state == MSB)
         data_buffer[7:0] = RxData;
+    else if(state == LSB)
         DataEn = 1'b1;
-    end
     else if(state == IDLE)begin
         data_buffer <= 0;
         DataEn = 1'b0;

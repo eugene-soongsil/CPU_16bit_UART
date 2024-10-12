@@ -25,27 +25,7 @@ parameter
           BAF_immsub    = 4'b1001,
           BAF_regsub    = 4'b1010,
           NONE          = 4'b1111;
-
- always @(*) begin
-    // 기본값 설정 (디폴트 상태)
-    {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
-
-    case(i_opcode)
-        LDA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010111;
-        STA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0001010;
-        CAL_add     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010001;
-        CAL_sub     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_0010001;
-        CAL_mul     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b10_0010001;
-        CAL_SLT     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b11_0010001;
-        IMM_add     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010011;
-        IMM_sub     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_0010011;
-        IMM_mul     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b10_0010011;
-        BAF_immsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100010;
-        BAF_regsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100000;
-        NONE        : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
-    endcase
-end
-/* 
+          
 always @(*) begin
     {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = flag;
 end
@@ -67,6 +47,25 @@ always @(*) begin
         NONE        : flag =    9'b00_0000000;
     endcase
 end
-*/
+
+/*always @(*) begin
+    // 기본값 설정 (디폴트 상태)
+    {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
+
+    case(i_opcode)
+        LDA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010111;
+        STA_imm     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0001010;
+        CAL_add     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010001;
+        CAL_sub     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_0010001;
+        CAL_mul     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b10_0010001;
+        CAL_SLT     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b11_0010001;
+        IMM_add     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0010011;
+        IMM_sub     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_0010011;
+        IMM_mul     : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b10_0010011;
+        BAF_immsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100010;
+        BAF_regsub  : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b01_1100000;
+        NONE        : {o_alufunc, branch, flush, RegWrite, MemWrite, MemToReg, immediate, forward} = 9'b00_0000000;
+    endcase
+end*/
 
 endmodule
