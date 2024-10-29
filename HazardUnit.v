@@ -16,7 +16,7 @@ module HazardUnit(
 reg lwstall;
 
 always@(*)begin
-    if(branch && (srcData1 != srcData2) && alu_resultE)
+    if(branch && (srcData1 != srcData2)) //&& (alu_resultE != 16'd0))
         InstBranch = 1'b1;
     else
         InstBranch = 1'b0;

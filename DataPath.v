@@ -31,9 +31,11 @@ wire    [15:0]          uart_instF, MemReadDataWout;
 wire                    uart_inst_enF;
 
 wire     uart_inst_en, uart_mem_en;
+wire     clk_neg;
 
 assign uart_inst_en = (uart_sel == 2'd2 && uart_en)? 1'b1 : 1'b0;
 assign uart_mem_en = (uart_sel == 2'd1 && uart_en)? 1'b1 : 1'b0;
+assign clk_neg = ~clk;
 
 ProgramCounter      inst_ProgramCounter(
     .clk(clk),
@@ -71,7 +73,7 @@ DecodeRegister      inst_DecodeRegister(
 );
 
 DecodeStage         inst_DecodeStage(
-    .clk(clk),
+    .clk_neg(clk_neg),
     .reset(reset),
     .write_en(RegWriteW),
     .destAddW(destAddW),
@@ -146,7 +148,7 @@ MemoryRegister      inst_MemoryRegister(
 );
 
 MemoryStage         inst_MemoryStage(
-    .clk(clk),
+    .clk_neg(clk_neg),
     .reset(reset),
     .MemWriteM(MemWriteM),
     .destAddM(destAddM), //edit

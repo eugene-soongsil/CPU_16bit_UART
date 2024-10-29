@@ -60,3 +60,7 @@ DataFilter ?? CPU내부???? 아니면 데이터를 체가는 범위가 다른지
 -> CRC 제거 및 DataFilter 교체
 
 4. 내 모듈과 동시 분석
+
+5. Timing issue
+-> 우선적으로 memory file과 register file의 negedge 동작방식에 timing문제
+-> ALU의 MUL의 지연문제

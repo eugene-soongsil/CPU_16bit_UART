@@ -1,5 +1,5 @@
 module MemoryStage(
-    input               clk, reset,
+    input               clk_neg, reset,
     input               MemWriteM,
     input       [3:0]   destAddM,
     input       [15:0]  alu_resultM,
@@ -11,7 +11,7 @@ module MemoryStage(
 );
 
 MemoryData  inst_MemoryData(
-    .clk(clk),
+    .clk(clk_neg),
     .reset(reset),
     .uart_mem(uart_mem),
     .uart_mem_en(uart_mem_en),

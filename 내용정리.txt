@@ -1,0 +1,92 @@
+1. 요약
+Verilog HDL을 사용하여서 16bit Havard architechure CPU를 제작
+본 CPU는 Fetch - Decode - Excute - Memory - Write의 5stage Pipeline을 이루고 있음
+사용 가능한 명령어로는 Load, Store, ADD, SUB, MUL, Immidiate, Branch(BEQ)가 있음
+전체적인 Data Flow를 조절하기 위해서 Control Unit을 구현하였으며 DataHazard를 없애기 위한 Data Forwarding를 구현
+이를 검증하기 위해서 Instruction Memory에 적정 Instruction set을 내장시킨 후
+UART 모듈을 이용해 Memory에 원하는 값을 넣어주고 PC값을 미리 내장시킨 Instruction set의 addr로 변경시켜 명령어를 trigger시킨다.
+위 과정들을 Nexys A7-100T Board를 이용해서 검증하였으며 UART와 Serial Com을 이용해서 올바른 출력을 내는 것을 확인할 수 있었습니다. 
+
+-1
+This paper presents the design and implementation of a 16-bit CPU
+based on the Harvard architecture using Verilog HDL.
+The CPU is organized with a 5-stage pipeline architecture,
+which includes Fetch, Decode, Execute, Memory, and Write-back stages.
+
+The instruction set supported by the CPU comprises essential operations
+such as Load, Store, ADD, SUB, MUL, Immediate, and conditional branching (BEQ).
+To manage the data flow efficiently, a Control Unit was implemented,
+along with Data Forwarding techniques to resolve data hazards and ensure seamless execution.
+
+For system validation, a predefined instruction set was embedded in the Instruction Memory.
+The UART module was employed to input necessary values into the memory,
+while the Program Counter (PC) was adjusted to trigger the appropriate instructions
+from the preloaded memory addresses.
+
+The proposed system was successfully tested, confirming its effectiveness
+in executing the specified operations.
+
+-2
+This paper presents the design and implementation of a 16-bit CPU
+based on the Harvard architecture using Verilog HDL.
+
+The CPU is structured with a 5-stage pipeline consisting of
+Fetch, Decode, Execute, Memory, and Write-back stages.
+
+The instruction set supported by the CPU includes
+Load, Store, ADD, SUB, MUL, Immediate, and conditional branching (BEQ).
+
+To effectively manage data flow, a Control Unit was implemented,
+along with Data Forwarding techniques to mitigate data hazards
+and ensure smooth execution.
+
+For validation, an appropriate instruction set was embedded in the Instruction Memory.
+The UART module was employed to input specific values into the memory,
+while the Program Counter (PC) was adjusted to trigger the execution of instructions
+from the predefined addresses.
+
+The entire system was verified using the Nexys A7-100T board,
+and successful operation was confirmed through the correct outputs,
+utilizing UART and Serial Com for system testing.
+
+
+2. 설계 내용 및 검증
+figure1(simple diagram of Topmodule)에서 보이는 것과 같이 각 Stage와 Control Unit는 Combinational Circuit으로 설계되었고
+Register는 Sequential Circuit으로 설계가 되어있습니다. 그렇기 때문에 각 stage는 1clk에 동작하는 것을 보장할 수 있습니다.
+Register File과 Memory Data, Instruction은 모두 16bit로 설계되어 있으며 그렇게 때문에 하드웨어 자원 절약과 처리의 속도의 적절한 균형을 맞출 수 있습니다.
+
+figure2(UART data from CPU Result)에서 보이는 것과 같이 UART를 이용해 Memory에 작성해주었던 값들이 정상적으로 Processing이 되었음을 확인할 수 있습니다.
+이를 통해서 위 figure1의 설계의 구동과 정확성을 확인할 수 있습니다.
+
+예시 - 초기 Memory에 0x20F2, 0x1104, 0x0113, 0x0024를 넣습니다. 이후 PC값을[0x0064]으로 변경시켜 Instruction을 Trigger 시킵니다.
+0x0064의 Instruction Set의 결과는 0x20F2 + 0x1104 = 0x31F6입니다.
+
+-2. Design and Verification
+As shown in Figure 1 (Simple Diagram of Topmodule),
+each stage and the Control Unit were designed as combinational circuits,
+while the registers were implemented as sequential circuits.
+This ensures that each stage operates within a single clock cycle.
+
+Both the Register File and Memory Data,
+as well as the Instruction set, were designed to be 16-bit,
+achieving a balanced trade-off between hardware resource efficiency and processing speed.
+
+In Figure 2 (UART Data from CPU Result),
+it can be observed that the values written to memory via UART were correctly processed,
+confirming the successful operation of the design shown in Figure 1.
+This verifies the functionality and accuracy of the proposed architecture.
+
+
+
+
+
+3. 결론
+본 연구에서는 16비트 Harvard 아키텍처 기반의 CPU를 Verilog HDL로 설계하고,
+Nexys A7-100T 보드를 이용하여 검증하였다.
+32비트 대신 16비트 아키텍처를 사용함으로써 하드웨어 복잡도를 줄이면서도 효율적인 명령어 처리 성능을 확인하였다.
+또한, UART를 통한 시리얼 통신을 성공적으로 구현하여, 외부 입력과 출력의 정확성을 검증하였다.
+본 시스템은 임베디드 환경에서 실시간 통신 및 연산 처리의 가능성을 보여주었으며, 향후 다양한 응용 프로그램에서의 확장을 기대할 수 있다.
+
+
+
+

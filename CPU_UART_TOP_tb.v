@@ -105,7 +105,8 @@ initial begin
 	//rx_in(16'h02BC, 2'h2); //700 error
 	rx_in(16'h0320, 2'h2); //800
 	rx_in(16'h0384, 2'h2); //900
-	#1000000
+	rx_in(16'h03E8, 2'h2); //1000
+	#1500000
 	$finish;
 end
 

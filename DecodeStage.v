@@ -1,5 +1,5 @@
 module DecodeStage(
-    input            clk,
+    input            clk_neg,
     input            reset,
     input            write_en,
     input  [3:0]     destAddW,
@@ -23,7 +23,7 @@ BranchDetect    inst_BranchDetect(
 );
 
 Register_File    inst_ResisterFile(
-    .clk(clk),
+    .clk(clk_neg),
     .reset(reset),
     .i_write_en(write_en),
     .immediateC(immediateC),
